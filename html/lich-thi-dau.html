@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Thi Đấu - Sports Hub</title>
+    <style>
+        :root {
+            --bg-body: #0d1117;
+            --bg-card: rgba(22, 27, 34, 0.7);
+            --border-card: rgba(255, 255, 255, 0.08);
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --primary: #58a6ff;
+            --accent: #238636;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-body); color: var(--text-main); line-height: 1.6; }
+        header { background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%); padding: 25px 20px; text-align: center; }
+        header h1 { font-size: 26px; font-weight: 800; background: linear-gradient(45deg, #58a6ff, #bc8cff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        nav { background: rgba(22, 27, 34, 0.5); padding: 15px; text-align: center; border-bottom: 1px solid var(--border-card); backdrop-filter: blur(10px); }
+        nav ul { list-style: none; }
+        nav ul li { display: inline; margin: 0 15px; }
+        nav ul li a { color: var(--text-muted); text-decoration: none; font-weight: 600; }
+        nav ul li a:hover { color: var(--primary); }
+        
+        .page-title { text-align: center; margin-top: 30px; font-weight: 800; }
+        .page-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 14px; }
+        
+        /* Bộ lọc vòng đấu */
+        .filter-container { margin-bottom: 25px; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0 10px; }
+        .filter-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-card); color: var(--text-muted); padding: 8px 16px; border-radius: 30px; font-size: 13px; transition: 0.3s; cursor: pointer; font-weight: 600; }
+        .filter-btn:hover, .filter-btn.active { background: var(--primary); color: #fff; box-shadow: 0 0 15px rgba(88, 166, 255, 0.4); border-color: transparent; }
+        
+        /* Danh sách trận đấu */
+        .match-container { max-width: 800px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 15px; }
+        .match-card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 12px; padding: 15px 20px; transition: 0.3s; }
+        .match-card:hover { transform: translateY(-2px); border-color: rgba(88, 166, 255, 0.3); }
+        .match-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; margin-bottom: 12px; }
+        
+        /* Khu vực hiển thị tỷ số / đội bóng */
+        .match-core { display: flex; align-items: center; justify-content: space-between; text-align: center; }
+        .team { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .team-flag { font-size: 28px; }
+        .team-name { font-size: 15px; font-weight: 700; color: #fff; }
+        
+        .score-zone { flex: 0 0 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .score-box { background: rgba(0,0,0,0.4); border: 1px solid var(--border-card); padding: 4px 15px; border-radius: 6px; font-family: monospace; font-size: 18px; font-weight: 700; color: var(--primary); letter-spacing: 2px; }
+        .vs-text { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .stadium-info { font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center; width: 100%; font-style: italic; }
+        
+        .hide { display: none !important; }
+        footer { text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 40px; padding: 20px; border-top: 1px solid var(--border-card); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SPORTS HUB PREMIUM</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">🏠 Trang Chủ</a></li>
+            <li><a href="lich-thi-dau.html" style="color: #58a6ff;">📅 Lịch Thi Đấu</a></li>
+            <li><a href="san-van-dong.html">🏟️ Sân Vận Động</a></li>
+            <li><a href="doi-tuyen.html">⚽ Đội Tuyển</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        <h2 class="page-title">📅 LỊCH THI ĐẤU TOÀN DIỆN</h2>
+        <p class="page-subtitle">Hệ thống cập nhật tự động lịch trình vòng bảng và vòng loại trực tiếp</p>
+
+        <!-- Bộ lọc các vòng đấu giống các trang thể thao lớn -->
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterStage('all')">Tất Cả Trận</button>
+            <button class="filter-btn" onclick="filterStage('group1')">Vòng Bảng - Lượt 1</button>
+            <button class="filter-btn" onclick="filterStage('group2')">Vòng Bảng - Lượt 2</button>
+            <button class="filter-btn" onclick="filterStage('group3')">Vòng Bảng - Lượt 3</button>
+            <button class="filter-btn" onclick="filterStage('knockout')">Vòng Loại Trực Tiếp</button>
+        </div>
+
+        <div class="match-container" id="matchContainer">
+            <!-- Trận đấu sẽ tự động đổ vào đây một cách khoa học -->
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Sports Hub Premium UI - Hệ thống Thể thao số</p>
+    </footer>
+
+    <script>
+        // Mảng chứa danh sách các trận đấu giả lập chân thực nhất
+        const matchesData = [
+            // LƯỢT TRẬN 1 VÒNG BẢNG
+            { stage: "group1", group: "Bảng A", date: "12/06 - 02:00", team1: "Hoa Kỳ", flag1: "🇺🇸", team2: "Ma-rốc", flag2: "🇲🇦", time: "02:00", score: "VS", stadium: "Azteca Stadium" },
+            { stage: "group1", group: "Bảng A", date: "12/06 - 05:00", team1: "Mexico", flag1: "🇲🇽", team2: "New Zealand", flag2: "🇳🇿", time: "05:00", score: "VS", stadium: "SoFi Stadium" },
+            { stage: "group1", group: "Bảng B", date: "13/06 - 21:00", team1: "Argentina", flag1: "🇦🇷", team2: "Thổ Nhĩ Kỳ", flag2: "🇹🇷", time: "21:00", score: "VS", stadium: "MetLife Stadium" },
+            { stage: "group1", group: "Bảng B", date: "13/06 - 00:00", team1: "Nhật Bản", flag1: "🇯🇵", team2: "Ghana", flag2: "🇬🇭", time: "00:00", score: "VS", stadium: "Hard Rock Stadium" },
+            { stage: "group1", group: "Bảng C", date: "14/06 - 03:00", team1: "Pháp", flag1: "🇫🇷", team2: "Hàn Quốc", flag2: "🇰🇷", time: "03:00", score: "VS", stadium: "Mercedes-Benz Stadium" },
+            { stage: "group1", group: "Bảng C", date: "14/06 - 06:00", team1: "Úc", flag1: "🇦🇺", team2: "Ecuador", flag2: "🇪🇨", time: "06:00", score: "VS", stadium: "AT&T Stadium" },
+            { stage: "group1", group: "Bảng D", date: "15/06 - 22:00", team1: "Anh", flag1: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", team2: "Ai Cập", flag2: "🇪🇬", time: "22:00", score: "VS", stadium: "Wembley Stadium" },
+            { stage: "group1", group: "Bảng D", date: "15/06 - 02:00", team1: "Nigeria", flag1: "🇳🇬", team2: "Áo", flag2: "🇦🇹", time: "02:00", score: "VS", stadium: "Lumen Field" },
+            { stage: "group1", group: "Bảng E", date: "16/06 - 01:00", team1: "Tây Ban Nha", flag1: "🇪🇸", team2: "Ả Rập Xê Út", flag2: "🇸🇦", time: "01:00", score: "VS", stadium: "Levi's Stadium" },
+            { stage: "group1", group: "Bảng F", date: "16/06 - 04:00", team1: "Brazil", flag1: "🇧🇷", team2: "Ý", flag2: "🇮🇹", time: "04:00", score: "VS", stadium: "Lincoln Financial Field" },
+
+            // LƯỢT TRẬN 2 VÒNG BẢNG
+            { stage: "group2", group: "Bảng A", date: "18/06 - 03:00", team1: "Hoa Kỳ", flag1: "🇺🇸", team2: "Mexico", flag2: "🇲🇽", time: "03:00", score: "VS", stadium: "Azteca Stadium" },
+            { stage: "group2", group: "Bảng A", date: "18/06 - 06:00", team1: "Ma-rốc", flag1: "🇲🇦", team2: "New Zealand", flag2: "🇳🇿", time: "06:00", score: "VS", stadium: "SoFi Stadium" },
+            { stage: "group2", group: "Bảng B", date: "19/06 - 21:00", team1: "Argentina", flag1: "🇦🇷", team2: "Nhật Bản", flag2: "🇯🇵", time: "21:00", score: "VS", stadium: "MetLife Stadium" },
+            { stage: "group2", group: "Bảng B", date: "19/06 - 00:00", team1: "Thổ Nhĩ Kỳ", flag1: "🇹🇷", team2: "Ghana", flag2: "🇬🇭", time: "00:00", score: "VS", stadium: "Gillette Stadium" },
+            { stage: "group2", group: "Bảng C", date: "20/06 - 02:00", team1: "Pháp", flag1: "🇫🇷", team2: "Úc", flag2: "🇦🇺", time: "02:00", score: "VS", stadium: "BC Place" },
+            { stage: "group2", group: "Bảng D", date: "21/06 - 01:00", team1: "Anh", flag1: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", team2: "Nigeria", flag2: "🇳🇬", time: "01:00", score: "VS", stadium: "Arrowhead Stadium" },
+
+            // LƯỢT TRẬN 3 VÒNG BẢNG
+            { stage: "group3", group: "Bảng A", date: "24/06 - 02:00", team1: "Hoa Kỳ", flag1: "🇺🇸", team2: "New Zealand", flag2: "🇳🇿", time: "02:00", score: "VS", stadium: "MetLife Stadium" },
+            { stage: "group3", group: "Bảng A", date: "24/06 - 02:00", team1: "Mexico", flag1: "🇲🇽", team2: "Ma-rốc", flag2: "🇲🇦", time: "02:00", score: "VS", stadium: "Azteca Stadium" },
+            { stage: "group3", group: "Bảng B", date: "25/06 - 23:00", team1: "Argentina", flag1: "🇦🇷", team2: "Ghana", flag2: "🇬🇭", time: "23:00", score: "VS", stadium: "Hard Rock Stadium" },
+            { stage: "group3", group: "Bảng B", date: "25/06 - 23:00", team1: "Nhật Bản", flag1: "🇯🇵", team2: "Thổ Nhĩ Kỳ", flag2: "🇹🇷", time: "23:00", score: "VS", stadium: "SoFi Stadium" },
+
+            // VÒNG TRỰC TIẾP (KNOCKOUT)
+            { stage: "knockout", group: "Vòng 32 Đội (Trận 1)", date: "29/06 - 03:00", team1: "Nhất Bảng A", flag1: "🥇", team2: "Ba Bảng C/D", flag2: "🥉", time: "03:00", score: "03:00", stadium: "SoFi Stadium" },
+            { stage: "knockout", group: "Vòng 32 Đội (Trận 2)", date: "30/06 - 06:00", team1: "Nhất Bảng B", flag1: "🥇", team2: "Nhì Bảng F", flag2: "🥈", time: "06:00", score: "06:00", stadium: "MetLife Stadium" },
+            { stage: "knockout", group: "Vòng 16 Đội (Trận 1/8)", date: "04/07 - 02:00", team1: "Thắng T1", flag1: "⚽", team2: "Thắng T2", flag2: "⚽", time: "02:00", score: "02:00", stadium: "Mercedes-Benz Stadium" },
+            { stage: "knockout", group: "Vòng Tứ Kết", date: "09/07 - 03:00", team1: "Thắng Tứ Kết 1", flag1: "⚔️", team2: "Thắng Tứ Kết 2", flag2: "⚔️", time: "03:00", score: "03:00", stadium: "Gillette Stadium" },
+            { stage: "knockout", group: "Vòng Bán Kết", date: "14/07 - 02:00", team1: "Bán Kết 1", flag1: "🔥", team2: "Bán Kết 2", flag2: "🔥", time: "02:00", score: "02:00", stadium: "AT&T Stadium" },
+            { stage: "knockout", group: "Trận Chung Kết 🏆", date: "19/07 - 02:00", team1: "Thắng BK 1", flag1: "👑", team2: "Thắng BK 2", flag2: "👑", time: "02:00", score: "ĐANG CHỜ", stadium: "MetLife Stadium (New York)" }
+        ];
+
+        // Hàm tạo cấu trúc các thẻ trận đấu tự động
+        function renderMatches() {
+            const container = document.getElementById('matchContainer');
+            container.innerHTML = "";
+
+            matchesData.forEach(match => {
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.setAttribute('data-stage', match.stage);
+
+                // Nếu chưa đá thì hiện chữ VS hoặc giờ, nếu có tỷ số thì đổi sau
+                const scoreDisplay = match.score === 'VS' ? `<span class="vs-text">VS</span>` : `<span class="score-box">${match.score}</span>`;
+
+                card.innerHTML = `
+                    <div class="match-meta">
+                        <span>${match.group}</span>
+                        <span style="color: var(--primary);">${match.date}</span>
+                    </div>
+                    <div class="match-core">
+                        <div class="team">
+                            <span class="team-flag">${match.flag1}</span>
+                            <span class="team-name">${match.team1}</span>
+                        </div>
+                        <div class="score-zone">
+                            ${scoreDisplay}
+                        </div>
+                        <div class="team">
+                            <span class="team-flag">${match.flag2}</span>
+                            <span class="team-name">${match.team2}</span>
+                        </div>
+                    </div>
+                    <div class="stadium-info">📍 Sân vận động: ${match.stadium}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Bộ lọc ẩn hiện các trận đấu theo sự kiện click chuột
+        function filterStage(stageName) {
+            // Thay đổi trạng thái active của button
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Ẩn hiện card tương ứng
+            const cards = document.querySelectorAll('.match-card');
+            cards.forEach(card => {
+                if (stageName === 'all' || card.getAttribute('data-stage') === stageName) {
+                    card.classList.remove('hide');
+                } else {
+                    card.add('hide'); // Dùng class để ẩn mượt mà
+                    card.classList.add('hide');
+                }
+            });
+        }
+
+        // Chạy hiển thị danh sách ngay khi tải trang xong
+        renderMatches();
+    </script>
+</body>
+</html>
