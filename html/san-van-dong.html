@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sân Vận Động - Sports Hub Premium</title>
+    <style>
+        :root {
+            --bg-body: #0d1117;
+            --bg-card: rgba(22, 27, 34, 0.85);
+            --border-card: rgba(255, 255, 255, 0.1);
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --primary: #58a6ff;
+            --accent: #238636;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-body); color: var(--text-main); line-height: 1.6; }
+        
+        /* Header & Navigation */
+        header { background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%); padding: 25px 20px; text-align: center; }
+        header h1 { font-size: 26px; font-weight: 800; background: linear-gradient(45deg, #58a6ff, #bc8cff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        nav { background: rgba(22, 27, 34, 0.6); padding: 15px; text-align: center; border-bottom: 1px solid var(--border-card); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; }
+        nav ul li { display: inline; margin: 0 15px; }
+        nav ul li a { color: var(--text-muted); text-decoration: none; font-weight: 600; }
+        nav ul li a:hover { color: var(--primary); }
+
+        .page-title { text-align: center; margin-top: 30px; font-weight: 800; }
+        .page-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 14px; }
+
+        /* Danh sách sân vận động (Grid Layout) */
+        .stadium-grid { max-width: 1100px; margin: 0 auto; padding: 0 20px 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        
+        .stadium-card { 
+            background: var(--bg-card); 
+            border: 1px solid var(--border-card); 
+            border-radius: 16px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        .stadium-card:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--primary); 
+            box-shadow: 0 15px 30px rgba(88, 166, 255, 0.2); 
+        }
+        
+        .stadium-img { 
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover; 
+            border-bottom: 1px solid var(--border-card);
+            transition: 0.5s;
+        }
+        .stadium-card:hover .stadium-img {
+            transform: scale(1.03);
+        }
+
+        .stadium-info { padding: 20px; }
+        .stadium-name { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+        .stadium-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
+        .stadium-meta strong { color: #fff; }
+
+        footer { text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 40px; padding: 25px; border-top: 1px solid var(--border-card); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SPORTS HUB PREMIUM</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">🏠 Trang Chủ</a></li>
+            <li><a href="lich-thi-dau.html">📅 Lịch Thi Đấu</a></li>
+            <li><a href="san-van-dong.html" style="color: #58a6ff;">🏟️ Sân Vận Động</a></li>
+            <li><a href="doi-tuyen.html">⚽ Đội Tuyển</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        <h2 class="page-title">🏟️ SIÊU ĐẤU TRƯỜNG ĐĂNG CAI</h2>
+        <p class="page-subtitle">Khám phá các thánh đường bóng đá hiện đại và hoành tráng nhất giải đấu</p>
+
+        <div class="stadium-grid">
+
+            <!-- Sân 1: MetLife Stadium -->
+            <div class="stadium-card">
+                <img src="https://images.unsplash.com/photo-1566371486490-560ded239ff6?auto=format&fit=crop&w=600&q=80" alt="MetLife Stadium" class="stadium-img">
+                <div class="stadium-info">
+                    <h3 class="stadium-name">MetLife Stadium</h3>
+                    <p class="stadium-meta">📍 Vị trí: <strong>New York / New Jersey, USA</strong></p>
+                    <p class="stadium-meta">👥 Sức chứa: <strong>82,500 chỗ ngồi</strong></p>
+                    <p class="stadium-meta">🏆 Tiêu điểm: <strong>Nơi tổ chức trận Chung Kết trong mơ</strong></p>
+                </div>
+            </div>
+
+            <!-- Sân 2: Estadio Azteca -->
+            <div class="stadium-card">
+                <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=600&q=80" alt="Estadio Azteca" class="stadium-img">
+                <div class="stadium-info">
+                    <h3 class="stadium-name">Estadio Azteca</h3>
+                    <p class="stadium-meta">📍 Vị trí: <strong>Mexico City, Mexico</strong></p>
+                    <p class="stadium-meta">👥 Sức chứa: <strong>87,523 chỗ ngồi</strong></p>
+                    <p class="stadium-meta">🏆 Tiêu điểm: <strong>Chảo lửa huyền thoại của lịch sử bóng đá</strong></p>
+                </div>
+            </div>
+
+            <!-- Sân 3: SoFi Stadium -->
+            <div class="stadium-card">
+                <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80" alt="SoFi Stadium" class="stadium-img">
+                <div class="stadium-info">
+                    <h3 class="stadium-name">SoFi Stadium</h3>
+                    <p class="stadium-meta">📍 Vị trí: <strong>Los Angeles, USA</strong></p>
+                    <p class="stadium-meta">👥 Sức chứa: <strong>70,240 chỗ ngồi</strong></p>
+                    <p class="stadium-meta">🏆 Tiêu điểm: <strong>Siêu sân vận động đắt nhất thế giới</strong></p>
+                </div>
+            </div>
+
+            <!-- Sân 4: Mercedes-Benz Stadium -->
+            <div class="stadium-card">
+                <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80" alt="Mercedes-Benz Stadium" class="stadium-img">
+                <div class="stadium-info">
+                    <h3 class="stadium-name">Mercedes-Benz Stadium</h3>
+                    <p class="stadium-meta">📍 Vị trí: <strong>Atlanta, USA</strong></p>
+                    <p class="stadium-meta">👥 Sức chứa: <strong>71,000 chỗ ngồi</strong></p>
+                    <p class="stadium-meta">🏆 Tiêu điểm: <strong>Thiết kế mái vòm đóng mở tương lai độc đáo</strong></p>
+                </div>
+            </div>
+
+            <!-- Sân 5: AT&T Stadium -->
+            <div class="stadium-card">
+                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80" alt="AT&T Stadium" class="stadium-img">
+                <div class="stadium-info">
+                    <h3 class="stadium-name">AT&T Stadium</h3>
+                    <p class="stadium-meta">📍 Vị trí: <strong>Dallas, USA</strong></p>
+                    <p class="stadium-meta">👥 Sức chứa: <strong>80,000 chỗ ngồi</strong></p>
+                    <p class="stadium-meta">🏆 Tiêu điểm: <strong>Màn hình LED khổng lồ treo giữa sân</strong></p>
+                </div>
+            </div>
+
+            <!-- Sân 6: BC Place -->
+            <div class="stadium-card">
+                <img src="">
+                <div class="stadium-info">
+                    <h3 class="stadium-name">BC Place</h3>
+                    <p class="stadium-meta">📍 Vị trí: <strong>Vancouver, Canada</strong></p>
+                    <p class="stadium-meta">👥 Sức chứa: <strong>54,500 chỗ ngồi</strong></p>
+                    <p class="stadium-meta">🏆 Tiêu điểm: <strong>Thánh địa bóng đá sôi động tại Canada</strong></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Sports Hub Premium UI - Hệ thống Thể thao số</p>
+    </footer>
+
+</body>
+</html>
