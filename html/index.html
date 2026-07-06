@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Sports Hub Premium</title>
+    <style>
+        :root {
+            --bg-body: #0d1117;
+            --bg-card: rgba(22, 27, 34, 0.85);
+            --border-card: rgba(255, 255, 255, 0.1);
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --primary: #58a6ff;
+            --accent: #238636;
+            --warning: #d29922;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-body); color: var(--text-main); line-height: 1.6; }
+        
+        /* Header & Navigation */
+        header { background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%); padding: 25px 20px; text-align: center; }
+        header h1 { font-size: 26px; font-weight: 800; background: linear-gradient(45deg, #58a6ff, #bc8cff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        nav { background: rgba(22, 27, 34, 0.6); padding: 15px; text-align: center; border-bottom: 1px solid var(--border-card); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; }
+        nav ul li { display: inline; margin: 0 15px; }
+        nav ul li a { color: var(--text-muted); text-decoration: none; font-weight: 600; transition: 0.2s; }
+        nav ul li a:hover { color: var(--primary); }
+
+        /* Hero Banner hình ảnh rực rỡ */
+        .hero { 
+            max-width: 1000px; 
+            margin: 30px auto; 
+            padding: 60px 20px; 
+            background: linear-gradient(to right, rgba(13, 17, 23, 0.9) 30%, rgba(13, 17, 23, 0.2) 100%), 
+                        url('https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcTnePkBxmpcBs8FF7hXb4g4bV1dWfT6s-9r4vRrm7nIiToi21kvQCR-0-Fsqni1rXFv7HA-gevuaGSRDqw') no-repeat center center;
+            background-size: cover;
+            border: 1px solid var(--border-card); 
+            border-radius: 16px; 
+            text-align: left; 
+            padding-left: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .hero h2 { font-size: 36px; font-weight: 900; margin-bottom: 15px; color: #fff; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        .hero p { color: #e1e7ed; max-width: 500px; margin-bottom: 25px; font-size: 16px; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
+        .live-badge { display: inline-block; background: #da3637; color: white; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; animation: blink 1.5s infinite; margin-bottom: 15px; box-shadow: 0 0 10px #da3637; }
+
+        /* Dashboard Grid Thống Kê */
+        .stats-grid { max-width: 1000px; margin: 0 auto 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 0 20px; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border-card); padding: 20px; border-radius: 12px; text-align: center; transition: 0.3s; backdrop-filter: blur(5px); }
+        .stat-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(88, 166, 255, 0.2); }
+        .stat-num { font-size: 32px; font-weight: 800; color: var(--primary); font-family: monospace; }
+        .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-top: 5px; }
+
+        /* Khối Nội dung chính chia 2 cột */
+        .main-layout { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr; gap: 25px; padding: 0 20px; }
+        @media (max-width: 768px) { .main-layout { grid-template-columns: 1fr; } }
+
+        /* Cột trái: Tin tức có ảnh minh họa nền */
+        .section-title { font-size: 18px; font-weight: 800; margin-bottom: 20px; border-left: 4px solid var(--primary); padding-left: 10px; display: flex; align-items: center; }
+        .news-card { 
+            background: var(--bg-card); 
+            border: 1px solid var(--border-card); 
+            border-radius: 12px; 
+            padding: 25px; 
+            margin-bottom: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .news-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.2); }
+        .news-tag { display: inline-block; align-self: flex-start; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; text-transform: uppercase; }
+        .tag-transfer { background: rgba(210, 153, 34, 0.2); color: var(--warning); }
+        .tag-injury { background: rgba(218, 54, 55, 0.2); color: #da3637; }
+        .tag-match { background: rgba(43, 134, 54, 0.2); color: var(--accent); }
+        .news-card h3 { font-size: 18px; font-weight: 700; color: #fff; z-index: 2; }
+        .news-card p { color: #cbd5e1; font-size: 14px; z-index: 2; }
+
+        /* Ảnh nền mờ cho tin nổi bật thứ nhất */
+        .news-bg-1 {
+            background: linear-gradient(to top, rgba(13, 17, 23, 0.95) 40%, rgba(13, 17, 23, 0.7) 100%), 
+                        url('https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcRv6zHl5zwWJWJBcC9caoZTv8VjYgaqkcSXzcd4nSmKQ-SD64lwH8p7H6G8h87jx1DaXeC9JcfWE1wqZGo') no-repeat center center;
+            background-size: cover;
+        }
+
+        /* Cột phải: Lối tắt điều hướng nhanh */
+        .sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .nav-card { background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.06) 100%); border: 1px solid var(--border-card); padding: 18px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: inherit; transition: 0.2s; }
+        .nav-card:hover { background: rgba(88, 166, 255, 0.12); border-color: var(--primary); transform: translateX(3px); }
+        .nav-card-info h4 { font-size: 15px; font-weight: 700; color: #fff; }
+        .nav-card-info p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .nav-card-arrow { font-size: 16px; color: var(--primary); }
+
+        /* Animation & Footer */
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        footer { text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 60px; padding: 25px; border-top: 1px solid var(--border-card); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SPORTS HUB PREMIUM</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html" style="color: #58a6ff;">🏠 Trang Chủ</a></li>
+            <li><a href="lich-thi-dau.html">📅 Lịch Thi Đấu</a></li>
+            <li><a href="san-van-dong.html">🏟️ Sân Vận Động</a></li>
+            <li><a href="doi-tuyen.html">⚽ Đội Tuyển</a></li>
+        </ul>
+    </nav>
+
+    <!-- Banner chính rực rỡ với hình ảnh cầu thủ chuyển động động năng hành động -->
+    <section class="hero">
+        <div class="live-badge">● LIVE UP-TO-DATE</div>
+        <h2>ĐƯỜNG TỚI CHIẾN THẮNG 2026</h2>
+        <p>Chào mừng bạn đến với trung tâm dữ liệu bóng đá đẳng cấp cao. Nơi cập nhật toàn diện chiến thuật, lịch trình thi đấu dày đặc và hồ sơ chi tiết của 48 anh tài bóng đá thế giới.</p>
+    </section>
+
+    <!-- Khu vực số liệu trực quan -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-num">48</div>
+            <div class="stat-label">Đội tuyển tham dự</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num">12</div>
+            <div class="stat-label">Bảng đấu chính thức</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num">104</div>
+            <div class="stat-label">Tổng số trận đấu</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num">16</div>
+            <div class="stat-label">Sân vận động siêu cấp</div>
+        </div>
+    </section>
+
+    <!-- Bố cục chia 2 phần nội dung -->
+    <main class="main-layout">
+        
+        <!-- Cột trái: Luồng tin tức giới thiệu với hình nền đấu trường thực tế -->
+        <section>
+            <div class="section-title">
+                <span>🔥 TIN TIÊU ĐIỂM HÔM NAY</span>
+            </div>
+
+            <!-- Tin đặc biệt lồng ảnh nền sân vận động Estadio Azteca hoành tráng -->
+            <div class="news-card news-bg-1">
+                <span class="news-tag tag-match">Cập nhật vòng bảng</span>
+                <h3>Cục diện bảng tử thần: 48 đội bóng làm nóng phòng thay đồ</h3>
+                <p>Với thể thức chia 12 bảng đấu hoàn toàn mới, các ông lớn như Pháp, Argentina, Brazil đang chịu áp lực cực lớn ngay từ lượt trận khai màn khi các đội tuyển chiếu dưới sẵn sàng tạo nên địa chấn tại các siêu đấu trường.</p>
+            </div>
+
+            <div class="news-card">
+                <span class="news-tag tag-transfer">Hậu trường HLV</span>
+                <h3>Thomas Tuchel thiết lập kỷ luật thép tại đội tuyển Anh</h3>
+                <p>Chiến lược gia người Đức đã chính thức tiếp quản Tam Sư với mục tiêu không gì khác ngoài cúp vàng. Các bài tập thể lực cường độ cao đang được áp dụng trực tiếp tại đại bản doanh.</p>
+            </div>
+
+            <div class="news-card">
+                <span class="news-tag tag-injury">Thông tin lực lượng</span>
+                <h3>Lionel Messi và Kylian Mbappé đạt trạng thái thể lực 100%</h3>
+                <p>Các bộ phận y tế xác nhận hai siêu sao lớn nhất của bóng đá đương đại đều đã hoàn thành giáo án phục hồi đặc biệt, sẵn sàng dẫn dắt hàng công đội nhà trong các trận đấu sắp tới.</p>
+            </div>
+        </section>
+
+        <!-- Cột phải: Lối tắt điều hướng nhanh -->
+        <aside class="sidebar">
+            <div class="section-title">
+                <span>⚡ TRUY CẬP NHANH</span>
+            </div>
+
+            <a href="lich-thi-dau.html" class="nav-card">
+                <div class="nav-card-info">
+                    <h4>📅 Lịch Thi Đấu Toàn Diện</h4>
+                    <p>Xem thời gian, bảng đấu, địa điểm</p>
+                </div>
+                <div class="nav-card-arrow">➔</div>
+            </a>
+
+            <a href="doi-tuyen.html" class="nav-card">
+                <div class="nav-card-info">
+                    <h4>⚽ Danh Sách 48 Đội Tuyển</h4>
+                    <p>Tra cứu ngôi sao, huấn luyện viên, thứ hạng</p>
+                </div>
+                <div class="nav-card-arrow">➔</div>
+            </a>
+
+            <a href="san-van-dong.html" class="nav-card">
+                <div class="nav-card-info">
+                    <h4>🏟️ Bản Đồ Sân Vận Động</h4>
+                    <p>Khám phá các siêu đấu trường đăng cai</p>
+                </div>
+                <div class="nav-card-arrow">➔</div>
+            </a>
+        </aside>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Sports Hub Premium UI - Hệ thống Thể thao số</p>
+    </footer>
+
+</body>
+</html>
